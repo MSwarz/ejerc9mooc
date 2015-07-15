@@ -1,3 +1,13 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Errorcilio <%= error.status %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <p>Se produjo un error <%= error.status %></p>
+   <h1><%= message %></h1>
+   <h2>El status <%= error.status %></h2>
+   <pre><%= error.stack %></pre>
+  </body>
+</html>
