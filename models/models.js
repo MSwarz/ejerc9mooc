@@ -27,7 +27,6 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 );
 
 // Usar BBDD SQLite local
-  //new Sequelize( DB_name, user, pwd,
 /*
 var sequelize = new Sequelize(null, null, null,
   { dialect:  'sqlite',
@@ -44,14 +43,14 @@ exports.Quiz = Quiz;
 
 // sequelize.sync() crea e inicializa tabla de preguntas en DB
 sequelize.sync().success(function() {
-  // success(..) ejecuta el manejador una vez creada la tabla
+  // success(..) ejecuta el manejador una vez creada la tabla. Forma antigua de manejar el callback, ahora con promises
   Quiz.count().success(function (count){
     if (count === 0) { //la tabla se inicializa sólo si está vacía
-      Quiz.create( { pregunta: 'Capital de Noruega',
-                     respuesta: 'Oslo'
+      Quiz.create( { pregunta: 'Capital de Grecia',
+                     respuesta: 'Atenas'
           })
       .success(function(){
-        console.log('Base de datos (tabla user) inicializada')});
+        console.log('Base de datos inicializada')});
     };
   });
 });
