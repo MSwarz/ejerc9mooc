@@ -8,6 +8,9 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz' });
 });
 
+// Autoload de comandos con :quizId  lo instalamos antes de show y answer
+router.param('quizId', quizController.load);  // se instala con metodo param sólo si contiene 'quizId' en el url 
+
 //atender peticiones
 router.get('/quizes', quizController.index);
 router.get('/quizes/:quizId(\\d+)', quizController.show);
