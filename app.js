@@ -27,7 +27,8 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 //de login, analisis de json, ..., cookies, ...
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded());   // lo dejamos asi para añadir registros...para gestionar bien parametros en el body con propiedades de objeto tipo quiz[pregunta]...quiz[respuesta]
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
