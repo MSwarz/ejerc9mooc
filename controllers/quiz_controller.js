@@ -69,7 +69,7 @@ exports.create = function(req, res) {
     res.render('quizes/edit', { quiz: quiz, errors: [] });
   };
 
-  // POST quizes/update con Validación
+  // PUT quizes/:id     update
   exports.update = function(req, res) {
     req.quiz.pregunta = req.body.quiz.pregunta;
     req.quiz.respuesta = req.body.quiz.respuesta;
@@ -88,3 +88,12 @@ exports.create = function(req, res) {
         }
       );
     };
+
+    // DELETE /quizes/:id
+exports.destroy = function(req, res) {
+  req.quiz.destroy().then( function() {
+    res.redirect('/quizes');
+  }).catch(function(error){next(error)});
+};
+
+//  console.log("req.quiz.id: " + req.quiz.id);
