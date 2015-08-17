@@ -7,11 +7,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var methodOverride = require('method-override');
+// midlseware para gestión de usuarios, sesiones, etc
+var session = require('express-session');
+
 //importamos enrutadores
 var routes = require('./routes/index');
-
-// no vamos a importar users
-//var users = require('./routes/users');
 
 var app = express();
 
@@ -19,10 +19,10 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(partials());
 
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
-
 
 //instalamos midlewares que importamos antes:
 //de login, analisis de json, ..., cookies, ...
@@ -30,17 +30,38 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded());   // lo dejamos asi para añadir registros...para gestionar bien parametros en el body con propiedades de objeto tipo quiz[pregunta]...quiz[respuesta]
-app.use(cookieParser());
+
+app.use(cookieParser('semilla Quiz 2015')); //cookieParser: añadir semilla ‘Quiz 2015’ para cifrar cookie
+//app.use(session);
+app.use(session({
+secret: 'semilla Quiz 2015',
+resave: false,
+saveUninitialized: true
+}));
 
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(partials());
+
+// Helpers dinamicos:
+app.use(function(req, res, next) {
+
+  // si no existe lo inicializa
+  if (!req.session.redir) {
+    req.session.redir = '/';
+  }
+
+  // guardar path en session.redir para despues de login
+  if (!req.path.match(/\/login|\/logout/)) {
+    req.session.redir = req.path;
+  }
+
+  // Hacer visible req.session en las vistas
+  res.locals.session = req.session;
+  next();
+});
 
 //instalamos los enrutadores
 app.use('/', routes); // asocia las rutas a los gestores
-
-// no usamos  este
-//app.use('/users', users);
 
 //este midleware para responder a cualquier otra ruta no atendida
 // por enrutadores anteriores: genera error 404 de http

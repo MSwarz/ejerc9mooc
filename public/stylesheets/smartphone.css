@@ -4,7 +4,7 @@ body             { background: #333; }
 
 h2 span, section h3, label.rem
                  { display: none; }
-body             { font-size: normal; }
-input, button    { font-size: normal; }
+body             { font-size: medium; }
+input, button    { font-size: medium; }
 footer           { font-size: large; }
 footer a{ display: block;}
