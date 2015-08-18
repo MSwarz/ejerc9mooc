@@ -11,7 +11,8 @@ router.get('/', function(req, res) {
 });
 
 // Autoload de comandos con :quizId  lo instalamos antes de show y answer
-router.param('quizId', quizController.load);  // se instala con metodo param sólo si contiene 'quizId' en el url
+router.param('quizId', quizController.load);  // autoload de quizId. se instala con metodo param sólo si contiene 'quizId' en el url
+router.param('commentId', commentController.load);  // autoload de commentId
 
 // Definición de rutas de sesión
 router.get('/login', sessionController.new);    // formulario login
@@ -30,6 +31,8 @@ router.delete('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizCont
 
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
+// habria que usar put para publicar -update
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish);
 
 router.get('/author', function(req, res) {
   res.render('author', { hechopor: 'Manuel Suárez', errors: [] });
