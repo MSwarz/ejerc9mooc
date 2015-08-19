@@ -25,6 +25,10 @@
       <% } %>
 
       <h2>Quiz<span>: Ejercicio 9</span></h2>
+
+        <% if( 1 || session.user ) { %>
+          <span id="timer">vd. estuvo <%= tTranscurrido/1000 %> segundos inactivo</span>
+        <% } %>
     </header>
 
     <nav class="main" id="n1" role="navigation">

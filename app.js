@@ -42,6 +42,27 @@ saveUninitialized: true
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Control de tiempo sin actividad => logout
+app.use(function(req, res, next){
+    var tMaximo = 120000; // 2 minutos
+    var tActual = new Date().getTime();
+    var tTranscurrido = 0;
+
+    // gestión de sesiones, sólo si ya he iniciado sesión (if req.session) y no es la primera, controlaré el tiempo de actividad
+    if(req.session && req.session.tAcceso) {
+        tTranscurrido = tActual - req.session.tAcceso;
+        if (tMaximo <= tTranscurrido){
+            delete req.session.user;
+        }
+    }
+
+    req.session.tAcceso = tActual;
+    // Hacer visible tTranscurrido en las vistas
+    res.locals.tTranscurrido = tTranscurrido;
+    next();
+});
+
+
 // Helpers dinamicos:
 app.use(function(req, res, next) {
 
